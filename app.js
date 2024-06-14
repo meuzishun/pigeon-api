@@ -61,3 +61,5 @@ const startApp = async () => {
     console.log(`Server listening on port ${process.env.PORT}`)
   );
 };
+
+startApp();
