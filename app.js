@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const http = require('http');
-const mongoose = require('mongoose');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
@@ -31,9 +30,9 @@ const corsOptions = {
 };
 
 const app = express();
-app.use(cors(corsOptions));
 
 if (process.env.NODE_ENV === 'Production') {
+  app.use(cors(corsOptions));
   app.use(limiter);
   app.use(compression());
   app.use(helmet());
@@ -46,20 +45,4 @@ app.use(errorHandler);
 
 const server = http.createServer(app);
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.DATABASE_URL);
-    console.log('Database connected');
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-const startApp = async () => {
-  await connectDB();
-  server.listen(process.env.PORT, () =>
-    console.log(`Server listening on port ${process.env.PORT}`)
-  );
-};
-
-startApp();
+module.exports = server;
