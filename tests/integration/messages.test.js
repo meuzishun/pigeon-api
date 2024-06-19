@@ -10,7 +10,8 @@ let loggedInUsers;
 
 beforeAll(async () => {
   await initializeMongoServer();
-  loggedInUsers = await registerUsers(mockUsers);
+  const registeredUsers = await registerUsers(mockUsers);
+  loggedInUsers = registeredUsers;
 });
 
 afterAll(async () => {
