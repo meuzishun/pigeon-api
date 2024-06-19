@@ -2,8 +2,6 @@ const { body, param, validationResult } = require('express-validator');
 const asyncHandler = require('express-async-handler');
 const Message = require('../models/message');
 const User = require('../models/user');
-const mongoose = require('mongoose');
-const ObjectId = mongoose.Types.ObjectId;
 
 // @desc    Get messages
 // @route   GET /api/messages
@@ -16,38 +14,12 @@ const getMessages = asyncHandler(async (req, res) => {
     throw new Error('No user found');
   }
 
-  const heads = await Message.find({
-    $or: [{ participants: user._id }, { author: user._id }],
-    parentId: null,
-  })
-    .populate('author', '-password -friends')
-    .populate('participants', '-password -friends');
+  const messages = await Message.find().populate(
+    'author',
+    '-password -friends'
+  );
 
-  const threads = heads.map((head) => [head]);
-
-  for (let i = 0; i < threads.length; i++) {
-    let searching = true;
-
-    while (searching) {
-      let lastMessage = threads[i][threads[i].length - 1];
-
-      let message = await Message.findOne({
-        parentId: lastMessage._id,
-      })
-        .populate('author', '-password -friends')
-        .populate('participants', '-password -friends');
-
-      if (message) {
-        threads[i].push(message);
-      }
-
-      if (!message) {
-        searching = false;
-      }
-    }
-  }
-
-  return res.status(200).json({ messages: threads });
+  return res.status(200).json({ messages });
 });
 
 // @desc    Get a single message
@@ -72,9 +44,10 @@ const getMessage = [
       throw new Error('No user found');
     }
 
-    const message = await Message.findById(req.params.messageId)
-      .populate('author', '-password -friends')
-      .populate('participants', '-password -friends');
+    const message = await Message.findById(req.params.messageId).populate(
+      'author',
+      '-password -friends'
+    );
 
     if (!message) {
       res.status(404);
@@ -125,10 +98,6 @@ const createMessage = [
     const populatedMessage = await Message.populate(message, [
       {
         path: 'author',
-        select: '-password -friends',
-      },
-      {
-        path: 'participants',
         select: '-password -friends',
       },
     ]);
@@ -186,9 +155,7 @@ const editMessage = [
         timestamp: new Date(),
       },
       { returnDocument: 'after' }
-    )
-      .populate('author', '-password -friends')
-      .populate('participants', '-password -friends');
+    ).populate('author', '-password -friends');
 
     res.status(201).json({ message: newMessage });
   }),

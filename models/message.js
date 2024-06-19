@@ -15,11 +15,11 @@ const MessageSchema = new Schema({
     type: Date,
     required: true,
   },
-  roomId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Room',
-    default: null,
-  },
+  // roomId: {
+  //   type: Schema.Types.ObjectId,
+  //   ref: 'Room',
+  //   default: null,
+  // },
 });
 
 module.exports = mongoose.model('Message', MessageSchema);
