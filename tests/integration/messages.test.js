@@ -80,7 +80,6 @@ describe('Get messages routes', () => {
       .send({
         data: {
           content: 'I am a test message.',
-          participants: [user10Id],
         },
       });
 
