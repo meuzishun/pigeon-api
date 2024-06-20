@@ -242,108 +242,6 @@ describe('New room route', () => {
 
     expect(res.body.room.messages).toBeTruthy();
   });
-
-  test.skip('responds with author first name', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author.firstName).toBeTruthy();
-  });
-
-  test.skip('responds with author last name', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author.lastName).toBeTruthy();
-  });
-
-  test.skip('responds with author email', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author.email).toBeTruthy();
-  });
-
-  test.skip('responds with author id', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author._id).toBeTruthy();
-  });
-
-  test.skip('responds without author password', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author.password).toBeFalsy();
-  });
-
-  test.skip('responds without author friends', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          content: 'Where am I?',
-        },
-      });
-
-    expect(res.body.message.author.friends).toBeFalsy();
-  });
 });
 
 describe('Get room route', () => {
@@ -712,6 +610,10 @@ describe('Edit room route', () => {
       'I am another edited room name but I will also be retrieved later'
     );
   });
+
+  test.skip('', async () => {});
+  test.skip('', async () => {});
+  test.skip('', async () => {});
 });
 
 describe('Delete room route', () => {
