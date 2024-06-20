@@ -3,7 +3,6 @@ const asyncHandler = require('express-async-handler');
 const Message = require('../models/message');
 const User = require('../models/user');
 const Room = require('../models/room');
-const mongoose = require('mongoose');
 
 // @desc    Get rooms
 // @route   GET /api/rooms
@@ -74,7 +73,7 @@ const createRoom = [
 
     if (!user) {
       res.status(400);
-      throw new Error('No author submitted');
+      throw new Error('No user found');
     }
 
     const room = await Room.create({
@@ -121,12 +120,12 @@ const editRoom = [
     const newRoom = await Room.findByIdAndUpdate(
       req.params.roomId,
       {
-        content: req.body.data.name,
+        name: req.body.data.name,
       },
       { returnDocument: 'after' }
     ).populate('messages');
 
-    res.status(201).json({ room });
+    res.status(201).json({ room: newRoom });
   }),
 ];
 
@@ -159,7 +158,7 @@ const deleteRoom = [
     }
 
     const deletedRoomId = await Room.findByIdAndDelete(req.params.roomId);
-    res.status(200).json({ id: deletedRoomId });
+    res.status(200).json({ id: deletedRoomId._id });
   }),
 ];
 
