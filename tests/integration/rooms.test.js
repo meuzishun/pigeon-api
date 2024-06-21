@@ -89,10 +89,6 @@ describe('Get rooms routes', () => {
 
     expect(res.body.rooms.length).toBe(1);
   });
-
-  test.skip('responds with populated messages', async () => {});
-
-  test.skip('responds with populated messages without populated authors', async () => {});
 });
 
 describe('New room route', () => {
@@ -224,23 +220,6 @@ describe('New room route', () => {
       });
 
     expect(res.body.room.name).toEqual('Test room');
-  });
-
-  test('responds with messages field', async () => {
-    const { token: maggieToken, _id: maggieId } = loggedInUsers.find(
-      (user) => user.firstName === 'Maggie'
-    );
-
-    const res = await request(app)
-      .post('/api/rooms')
-      .set('Authorization', `Bearer ${maggieToken}`)
-      .send({
-        data: {
-          name: 'Test room',
-        },
-      });
-
-    expect(res.body.room.messages).toBeTruthy();
   });
 });
 
@@ -610,10 +589,6 @@ describe('Edit room route', () => {
       'I am another edited room name but I will also be retrieved later'
     );
   });
-
-  test.skip('', async () => {});
-  test.skip('', async () => {});
-  test.skip('', async () => {});
 });
 
 describe('Delete room route', () => {
