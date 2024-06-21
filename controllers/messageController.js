@@ -3,27 +3,30 @@ const asyncHandler = require('express-async-handler');
 const Message = require('../models/message');
 const User = require('../models/user');
 
-// @desc    Get messages
-// @route   GET /api/messages
+// @desc    Get room messages
+// @route   GET /api/rooms/:roomId/messages
 // @access  Private
-const getMessages = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.body.user._id);
+const getMessages = [
+  param('roomId').isMongoId().withMessage('Invalid room ID'),
+  asyncHandler(async (req, res) => {
+    const user = await User.findById(req.body.user._id);
 
-  if (!user) {
-    res.status(400);
-    throw new Error('No user found');
-  }
+    if (!user) {
+      res.status(400);
+      throw new Error('No user found');
+    }
 
-  const messages = await Message.find().populate(
-    'author',
-    '-password -friends'
-  );
+    const messages = await Message.find({ room: req.params.roomId }).populate(
+      'author',
+      '-password -friends'
+    );
 
-  return res.status(200).json({ messages });
-});
+    return res.status(200).json({ messages });
+  }),
+];
 
-// @desc    Get a single message
-// @route   GET /api/messages/:messageId
+// @desc    Get a single room message
+// @route   GET /api/rooms/:roomId/messages/:messageId
 // @access  Private
 const getMessage = [
   param('messageId').isMongoId().withMessage('Invalid message ID'),
@@ -63,8 +66,8 @@ const getMessage = [
   }),
 ];
 
-// @desc    Post messages
-// @route   POST /api/messages
+// @desc    Post room messages
+// @route   POST /api/rooms/:roomId/messages
 // @access  Private
 const createMessage = [
   body('data.content')
@@ -92,6 +95,7 @@ const createMessage = [
     const message = await Message.create({
       ...req.body.data,
       author: user._id,
+      room: req.params.roomId,
       timestamp: new Date(),
     });
 
@@ -107,7 +111,7 @@ const createMessage = [
 ];
 
 // @desc    Edit message
-// @route   PUT /api/messages/:messageId/edit
+// @route   PUT /api/rooms/:roomId/messages/:messageId/edit
 // @access  Private
 const editMessage = [
   param('messageId').isMongoId().withMessage('Invalid message ID'),
@@ -162,7 +166,7 @@ const editMessage = [
 ];
 
 // @desc    Delete message
-// @route   DELETE /api/messages/:messageId
+// @route   DELETE /api/rooms/:roomId/messages/:messageId
 // @access  Private
 const deleteMessage = [
   param('messageId').isMongoId().withMessage('Invalid message ID'),
