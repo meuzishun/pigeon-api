@@ -15,7 +15,7 @@ const getRooms = asyncHandler(async (req, res) => {
     throw new Error('No user found');
   }
 
-  const rooms = await Room.find().populate('messages');
+  const rooms = await Room.find();
   return res.status(200).json({ rooms });
 });
 
@@ -40,7 +40,7 @@ const getRoom = [
       throw new Error('No user found');
     }
 
-    const room = await Room.findById(req.params.roomId).populate('messages');
+    const room = await Room.findById(req.params.roomId);
 
     if (!room) {
       res.status(404);
@@ -123,7 +123,7 @@ const editRoom = [
         name: req.body.data.name,
       },
       { returnDocument: 'after' }
-    ).populate('messages');
+    );
 
     res.status(201).json({ room: newRoom });
   }),
