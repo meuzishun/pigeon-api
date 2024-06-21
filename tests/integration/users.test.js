@@ -375,7 +375,7 @@ describe('Get user route', () => {
     expect(res.body.user).not.toHaveProperty('friends');
   });
 
-  test.skip('responds with user first name that matches id provided', async () => {
+  test('responds with user first name that matches id provided', async () => {
     const user1 = loggedInUsers.find((user) => user.firstName === 'User');
 
     const { token: maggieToken } = loggedInUsers.find(
