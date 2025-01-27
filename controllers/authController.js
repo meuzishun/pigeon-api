@@ -4,15 +4,11 @@ const asyncHandler = require('express-async-handler');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
+const fs = require('fs');
+const path = require('path');
 
-let PRIV_KEY = process.env.PRIV_KEY;
-
-if (!PRIV_KEY) {
-  console.error('PRIV_KEY environment variable is not set');
-  process.exit(1); // Exit the application if the private key is not set
-}
-
-PRIV_KEY = PRIV_KEY.replace(/\\n/g, '\n');
+const pathToPrivKey = path.join(__dirname, '..', 'id_rsa_priv.pem');
+const PRIV_KEY = fs.readFileSync(pathToPrivKey, 'utf8');
 
 // @desc    Register user
 // @route   POST /api/register
