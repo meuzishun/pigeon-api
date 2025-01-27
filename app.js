@@ -14,6 +14,7 @@ const limiter = RateLimit({
 });
 
 const whitelist = [
+  'https://meuzishun.github.io/pigeon-ui',
   'https://meuzishun.github.io',
   'http://127.0.0.1:5173',
   'http://localhost:5173',
@@ -21,23 +22,21 @@ const whitelist = [
 
 const corsOptions = {
   origin: function (origin, callback) {
-    if (whitelist.includes(origin || !origin)) {
+    if (!origin || whitelist.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error(`Not allowed by CORS: ${origin}`));
     }
   },
 };
 
 const app = express();
-
-if (process.env.NODE_ENV === 'Production') {
-  app.use(cors(corsOptions));
-  app.use(limiter);
-  app.use(compression());
-  app.use(helmet());
-}
-
+app.options('*', cors(corsOptions));
+app.set('trust proxy', 1);
+app.use(cors(corsOptions));
+app.use(limiter);
+app.use(compression());
+app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use('/api', routes);
