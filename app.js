@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const http = require('http');
 const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
@@ -42,6 +41,4 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/api', routes);
 app.use(errorHandler);
 
-const server = http.createServer(app);
-
-module.exports = server;
+module.exports = { app };
