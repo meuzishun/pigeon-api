@@ -2,15 +2,16 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const asyncHandler = require('express-async-handler');
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
-let PRIV_KEY = process.env.PRIV_KEY;
+const pathToKey = path.join(__dirname, '..', 'id_rsa_pub.pem');
+const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
-if (!PRIV_KEY) {
-  console.error('PRIV_KEY environment variable is not set');
+if (!PUB_KEY) {
+  console.error('PUB_KEY environment variable is not set');
   process.exit(1); // Exit the application if the private key is not set
 }
-
-PRIV_KEY = PRIV_KEY.replace(/\\n/g, '\n');
 
 const authHandler = asyncHandler(async (req, res, next) => {
   if (
@@ -22,7 +23,7 @@ const authHandler = asyncHandler(async (req, res, next) => {
   }
 
   const token = req.headers.authorization.split(' ')[1];
-  const decoded = jwt.verify(token, PRIV_KEY);
+  const decoded = jwt.verify(token, PUB_KEY);
   const user = await User.findById(decoded.id).select('-password');
 
   if (!user) {
