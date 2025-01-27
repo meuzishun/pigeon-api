@@ -52,7 +52,7 @@ const getRoom = [
 ];
 
 // @desc    Post room
-// @route   POST /api/room
+// @route   POST /api/rooms
 // @access  Private
 const createRoom = [
   body('data.name')
