@@ -11,13 +11,19 @@ const MessageSchema = new Schema({
     ref: 'User',
     required: true,
   },
+  participants: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
+  ],
   timestamp: {
     type: Date,
     required: true,
   },
-  room: {
+  parentId: {
     type: Schema.Types.ObjectId,
-    ref: 'Room',
+    ref: 'Message',
     default: null,
   },
 });
