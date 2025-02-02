@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const authHandler = require('../middleware/authMiddleware');
 const {
   getRooms,
   getRoom,
@@ -9,11 +8,11 @@ const {
 } = require('../controllers/roomController');
 const messageRoutes = require('./messages');
 
-router.get('/', authHandler, getRooms);
-router.get('/:roomId', authHandler, getRoom);
-router.post('/', authHandler, createRoom);
-router.put('/:roomId', authHandler, editRoom);
-router.delete('/:roomId', authHandler, deleteRoom);
-router.use('/:roomId/messages', authHandler, messageRoutes);
+router.get('/', getRooms);
+router.get('/:roomId', getRoom);
+router.post('/', createRoom);
+router.put('/:roomId', editRoom);
+router.delete('/:roomId', deleteRoom);
+router.use('/:roomId/messages', messageRoutes);
 
 module.exports = router;
