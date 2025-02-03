@@ -23,7 +23,15 @@ const authHandler = asyncHandler(async (req, res, next) => {
   }
 
   const token = req.headers.authorization.split(' ')[1];
-  const decoded = jwt.verify(token, PUB_KEY);
+
+  let decoded;
+  try {
+    decoded = jwt.verify(token, PUB_KEY);
+  } catch (err) {
+    res.status(401);
+    throw new Error('Invalid token');
+  }
+
   const user = await User.findById(decoded.id).select('-password');
 
   if (!user) {
