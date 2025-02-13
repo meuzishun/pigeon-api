@@ -1,6 +1,6 @@
 # Pigeon API
 
-The backend for the Pigeon messaging app, providing real-time communication via Socket.io and secure user authentication with JWT. Built with Node.js, Express, and MongoDB.
+The backend for the [Pigeon messaging app](https://github.com/meuzishun/pigeon-ui), providing real-time communication via Socket.io and secure user authentication with JWT. Built with Node.js, Express, and MongoDB.
 
 ## Features
 
